@@ -9,21 +9,23 @@ class ProfileCreator {
 
     initializeElements() {
         // Sections
-        this.roleSection = document.getElementById('roleSection');
-        this.usernameSection = document.getElementById('usernameSection');
-        this.walletSection = document.getElementById('walletSection');
-        this.loadingOverlay = document.getElementById('loadingOverlay');
-        this.loadingMessage = document.getElementById('loadingMessage');
+        this.roleSelection = document.querySelector('.role-selection');
+        this.usernameSection = document.querySelector('.username-section');
+        this.walletConnect = document.querySelector('.wallet-connect');
+        this.loadingOverlay = document.querySelector('.loading-overlay');
 
         // Role selection elements
         this.roleCards = document.querySelectorAll('.role-card');
+        this.selectRoleButtons = document.querySelectorAll('.select-role-btn');
         
         // Username elements
-        this.usernameInput = document.getElementById('usernameInput');
-        this.usernameStatus = document.getElementById('usernameStatus');
+        this.usernameInput = document.querySelector('#username');
+        this.usernameStatus = document.querySelector('.username-status');
+        this.continueBtn = document.querySelector('.continue-btn');
         
         // Wallet elements
-        this.connectWalletBtn = document.getElementById('connectWalletBtn');
+        this.connectWalletBtn = document.querySelector('.connect-wallet-btn');
+        this.walletStatus = document.querySelector('.wallet-status');
 
         // Step indicators
         this.steps = document.querySelectorAll('.step');
@@ -31,18 +33,19 @@ class ProfileCreator {
 
     attachEventListeners() {
         // Role selection
-        this.roleCards.forEach(card => {
-            card.addEventListener('click', () => this.handleRoleSelection(card));
+        this.selectRoleButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const card = e.target.closest('.role-card');
+                if (card) {
+                    this.handleRoleSelection(card);
+                }
+            });
         });
 
         // Username input
         if (this.usernameInput) {
             this.usernameInput.addEventListener('input', () => this.handleUsernameInput());
-            this.usernameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !this.usernameInput.disabled) {
-                    this.handleUsernameSubmit();
-                }
-            });
+            this.continueBtn.addEventListener('click', () => this.handleUsernameSubmit());
         }
 
         // Wallet connection
@@ -67,10 +70,14 @@ class ProfileCreator {
 
     handleRoleSelection(card) {
         // Remove selection from all cards
-        this.roleCards.forEach(c => c.classList.remove('selected'));
+        this.roleCards.forEach(c => {
+            c.classList.remove('selected');
+            c.querySelector('.select-role-btn').textContent = 'Select Role';
+        });
 
         // Add selection to clicked card
         card.classList.add('selected');
+        card.querySelector('.select-role-btn').textContent = 'Selected';
         
         // Store selected role
         this.selectedRole = card.dataset.role;
@@ -80,9 +87,9 @@ class ProfileCreator {
 
         // Show username section with animation
         setTimeout(() => {
-            this.roleSection.classList.add('slide-out');
+            this.roleSelection.classList.add('slide-out');
             setTimeout(() => {
-                this.roleSection.classList.add('hidden');
+                this.roleSelection.style.display = 'none';
                 this.usernameSection.classList.remove('hidden');
                 this.usernameSection.classList.add('slide-in');
                 this.usernameInput.focus();
@@ -99,123 +106,68 @@ class ProfileCreator {
                 'Username must be at least 3 characters' : 
                 'Use only letters, numbers, and underscores';
             this.usernameStatus.className = 'username-status error';
-            return false;
+            this.continueBtn.disabled = true;
+            return;
         }
 
-        // Check username availability
-        try {
-            const response = await fetch(`/api/check-username/${username}`);
-            const data = await response.json();
-            
-            if (data.available) {
-                this.usernameStatus.textContent = 'Username is available!';
-                this.usernameStatus.className = 'username-status success';
-                this.username = username;
-                return true;
-            } else {
-                this.usernameStatus.textContent = 'Username is already taken';
-                this.usernameStatus.className = 'username-status error';
-                return false;
-            }
-        } catch (error) {
-            console.error('Error checking username:', error);
-            this.usernameStatus.textContent = 'Error checking username availability';
+        // Simulate username availability check
+        this.usernameStatus.textContent = 'Checking availability...';
+        this.usernameStatus.className = 'username-status';
+        
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // For demo, assume username is available if it ends with odd number
+        const isAvailable = parseInt(username.slice(-1)) % 2 === 1;
+        
+        if (isAvailable) {
+            this.usernameStatus.textContent = 'Username is available!';
+            this.usernameStatus.className = 'username-status success';
+            this.continueBtn.disabled = false;
+            this.username = username;
+        } else {
+            this.usernameStatus.textContent = 'Username is already taken';
             this.usernameStatus.className = 'username-status error';
-            return false;
+            this.continueBtn.disabled = true;
         }
     }
 
-    async handleUsernameSubmit() {
-        if (await this.handleUsernameInput()) {
-            // Update step indicator
-            this.updateStepIndicator(2);
+    handleUsernameSubmit() {
+        if (!this.username || this.continueBtn.disabled) return;
 
-            // Show wallet section with animation
+        // Update step indicator
+        this.updateStepIndicator(2);
+
+        // Show wallet section with animation
+        setTimeout(() => {
             this.usernameSection.classList.add('slide-out');
             setTimeout(() => {
                 this.usernameSection.classList.add('hidden');
-                this.walletSection.classList.remove('hidden');
-                this.walletSection.classList.add('slide-in');
+                this.walletConnect.classList.remove('hidden');
+                this.walletConnect.classList.add('slide-in');
             }, 300);
-        }
+        }, 500);
     }
 
     async connectWallet() {
         this.loadingOverlay.classList.remove('hidden');
-        this.loadingMessage.textContent = 'Connecting wallet...';
-
+        
         try {
-            // Check if Phantom is installed
-            if (!window.solana || !window.solana.isPhantom) {
-                const installUrl = 'https://phantom.app/';
-                if (confirm('Phantom wallet is not installed. Would you like to install it now?')) {
-                    window.open(installUrl, '_blank');
-                }
-                throw new Error('Please install Phantom wallet and refresh the page');
-            }
-
-            // Connect to Phantom
-            const provider = window.solana;
+            // Simulate wallet connection
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Request connection
-            const connection = await provider.connect();
-            this.walletAddress = connection.publicKey.toString();
-
-            // Check if wallet is already used
-            const response = await fetch(`/api/check-wallet/${this.walletAddress}`);
-            const data = await response.json();
-
-            if (!data.available) {
-                throw new Error('This wallet already has a profile');
-            }
-
-            this.loadingMessage.textContent = 'Wallet connected! Creating profile...';
-
-            // Create profile
-            await this.createProfile();
-
-        } catch (error) {
-            console.error('Wallet connection error:', error);
-            this.loadingMessage.textContent = error.message;
+            this.walletAddress = '0x' + Math.random().toString(16).slice(2, 12);
+            this.walletStatus.textContent = `Connected: ${this.walletAddress}`;
+            this.walletStatus.className = 'wallet-status success';
+            
+            // Redirect to profile editor after successful connection
             setTimeout(() => {
-                this.loadingOverlay.classList.add('hidden');
-            }, 3000);
-        }
-    }
-
-    async createProfile() {
-        try {
-            const profileData = {
-                username: this.username,
-                role: this.selectedRole,
-                walletAddress: this.walletAddress
-            };
-
-            const response = await fetch('/api/profiles', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(profileData)
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || 'Failed to create profile');
-            }
-
-            // Save wallet address in localStorage
-            localStorage.setItem('walletAddress', this.walletAddress);
-
-            // Redirect to profile editor
-            window.location.href = `profile-editor.html?username=${encodeURIComponent(this.username)}`;
-
+                window.location.href = 'profile-editor.html';
+            }, 1000);
         } catch (error) {
-            console.error('Error creating profile:', error);
-            this.loadingMessage.textContent = error.message;
-            setTimeout(() => {
-                this.loadingOverlay.classList.add('hidden');
-            }, 3000);
+            this.walletStatus.textContent = 'Failed to connect wallet. Please try again.';
+            this.walletStatus.className = 'wallet-status error';
+        } finally {
+            this.loadingOverlay.classList.add('hidden');
         }
     }
 }
