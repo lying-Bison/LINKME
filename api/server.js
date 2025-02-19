@@ -6,11 +6,10 @@ const multer = require('multer');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Configure CORS to allow requests from your Netlify domain
+// Configure CORS to allow requests from your Vercel domain
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || '*', // Replace with your Netlify URL in .env
+    origin: '*', // Allow all origins for now
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 };
@@ -18,13 +17,11 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000 // 5 second timeout
+    useUnifiedTopology: true
 }).then(() => {
     console.log('Connected to MongoDB successfully');
 }).catch(err => {
@@ -213,6 +210,4 @@ if (!fs.existsSync('uploads')) {
     fs.mkdirSync('uploads');
 }
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;

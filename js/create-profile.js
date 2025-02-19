@@ -104,7 +104,7 @@ class ProfileCreator {
 
         // Check username availability
         try {
-            const response = await fetch(`http://localhost:3002/api/check-username/${username}`);
+            const response = await fetch(`/api/check-username/${username}`);
             const data = await response.json();
             
             if (data.available) {
@@ -162,7 +162,7 @@ class ProfileCreator {
             this.walletAddress = connection.publicKey.toString();
 
             // Check if wallet is already used
-            const response = await fetch(`http://localhost:3002/api/check-wallet/${this.walletAddress}`);
+            const response = await fetch(`/api/check-wallet/${this.walletAddress}`);
             const data = await response.json();
 
             if (!data.available) {
@@ -191,7 +191,7 @@ class ProfileCreator {
                 walletAddress: this.walletAddress
             };
 
-            const response = await fetch('http://localhost:3002/api/profiles', {
+            const response = await fetch('/api/profiles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
