@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoProfile</title>
+    <link rel="stylesheet" href="css/public-profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style id="dynamicTheme"></style>
+</head>
+<body>
+    <main class="profile-container">
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-info">
+                    <h1 id="displayName"></h1>
+                    <p id="bio" class="bio"></p>
+                    <div id="socialLinks" class="social-links"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Get profile data from localStorage
+                const profileData = JSON.parse(localStorage.getItem('profileData'));
+                if (!profileData) {
+                    throw new Error('Profile not found');
+                }
+
+                // Apply theme colors from the saved theme
+                const theme = profileData.theme || {};
+                const primary = theme.primary || '#6C5CE7';
+                const secondary = theme.secondary || '#A29BFE';
+                
+                // Create dynamic CSS with the theme colors
+                const dynamicCSS = `
+                    :root {
+                        --theme-primary: ${primary};
+                        --theme-secondary: ${secondary};
+                    }
+
+                    /* Apply gradient to profile content */
+                    .profile-content::before {
+                        background: linear-gradient(135deg, ${primary}, ${secondary});
+                    }
+
+                    /* Apply border and glow effects to profile avatar */
+                    .profile-avatar-placeholder {
+                        border-color: ${primary} !important;
+                        box-shadow: 
+                            0 0 10px 0 ${primary},
+                            0 0 20px 0 ${primary},
+                            0 0 30px 0 ${primary} !important;
+                    }
+
+                    .profile-avatar-placeholder::before {
+                        background: ${primary} !important;
+                        box-shadow: 
+                            0 0 2px 1px ${primary},
+                            0 0 4px 1px ${primary},
+                            0 0 6px 2px ${primary},
+                            0 0 8px 2px ${primary},
+                            0 0 12px 3px ${primary} !important;
+                    }
+
+                    /* Apply hover effect to social links */
+                    .social-link:hover {
+                        background: ${primary};
+                    }
+                `;
+                document.getElementById('dynamicTheme').textContent = dynamicCSS;
+
+                // Update display name and calculate text color
+                const nameElement = document.getElementById('displayName');
+                if (nameElement) {
+                    nameElement.textContent = profileData.displayName || 'Anonymous';
+                    
+                    // Calculate text color based on primary color
+                    const getContrastColor = (hexcolor) => {
+                        hexcolor = hexcolor.replace('#', '');
+                        const r = parseInt(hexcolor.substr(0, 2), 16);
+                        const g = parseInt(hexcolor.substr(2, 2), 16);
+                        const b = parseInt(hexcolor.substr(4, 2), 16);
+                        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                        return luminance > 0.7 ? '#000000' : '#FFFFFF';
+                    };
+
+                    const textColor = getContrastColor(primary);
+                    const isPureBlack = textColor === '#000000';
+
+                    if (isPureBlack) {
+                        nameElement.style.color = '#000000';
+                        nameElement.style.fontWeight = '800';
+                        nameElement.style.letterSpacing = '-0.2px';
+                        document.getElementById('bio').style.color = '#000000';
+                        document.getElementById('bio').style.fontWeight = '500';
+                    } else {
+                        nameElement.style.color = '#FFFFFF';
+                        nameElement.style.fontWeight = '600';
+                        document.getElementById('bio').style.color = 'rgba(255, 255, 255, 0.9)';
+                        document.getElementById('bio').style.fontWeight = 'normal';
+                    }
+                }
+
+                // Update bio
+                const bioElement = document.getElementById('bio');
+                if (bioElement) {
+                    bioElement.textContent = profileData.bio || 'No bio provided';
+                }
+
+                // Update social links
+                const socialLinksContainer = document.getElementById('socialLinks');
+                if (socialLinksContainer && profileData.socialLinks) {
+                    const links = [];
+                    for (const [platform, username] of Object.entries(profileData.socialLinks)) {
+                        if (username) {
+                            const baseUrls = {
+                                'twitter': 'https://twitter.com/',
+                                'instagram': 'https://instagram.com/',
+                                'linkedin': 'https://linkedin.com/in/',
+                                'github': 'https://github.com/',
+                                'discord': 'https://discord.com/users/',
+                                'telegram': 'https://t.me/',
+                                'other': ''
+                            };
+
+                            let href = username;
+                            if (!username.startsWith('http://') && !username.startsWith('https://')) {
+                                href = baseUrls[platform] + username.replace('@', '');
+                            }
+
+                            const platformIcons = {
+                                'twitter': 'fab fa-twitter',
+                                'instagram': 'fab fa-instagram',
+                                'linkedin': 'fab fa-linkedin',
+                                'github': 'fab fa-github',
+                                'discord': 'fab fa-discord',
+                                'telegram': 'fab fa-telegram',
+                                'other': 'fas fa-link'
+                            }[platform] || 'fas fa-link';
+
+                            links.push(`
+                                <a href="${href}" class="social-link" target="_blank" rel="noopener noreferrer">
+                                    <i class="${platformIcons}"></i>
+                                </a>
+                            `);
+                        }
+                    }
+                    socialLinksContainer.innerHTML = links.join('');
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.querySelector('.profile-container').innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <h2 style="color: #ff4444;">Failed to Load Profile</h2>
+                        <p style="color: #ffffff;">${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
