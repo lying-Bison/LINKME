@@ -16,7 +16,6 @@ class ProfileCreator {
 
         // Role selection elements
         this.roleCards = document.querySelectorAll('.role-card');
-        this.selectRoleButtons = document.querySelectorAll('.select-role-btn');
         
         // Username elements
         this.usernameInput = document.querySelector('#username');
@@ -33,18 +32,19 @@ class ProfileCreator {
 
     attachEventListeners() {
         // Role selection
-        this.selectRoleButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const card = e.target.closest('.role-card');
-                if (card) {
-                    this.handleRoleSelection(card);
-                }
-            });
+        this.roleCards.forEach(card => {
+            const button = card.querySelector('.select-role-btn');
+            if (button) {
+                button.addEventListener('click', () => this.handleRoleSelection(card));
+            }
         });
 
         // Username input
         if (this.usernameInput) {
             this.usernameInput.addEventListener('input', () => this.handleUsernameInput());
+        }
+
+        if (this.continueBtn) {
             this.continueBtn.addEventListener('click', () => this.handleUsernameSubmit());
         }
 
@@ -72,12 +72,14 @@ class ProfileCreator {
         // Remove selection from all cards
         this.roleCards.forEach(c => {
             c.classList.remove('selected');
-            c.querySelector('.select-role-btn').textContent = 'Select Role';
+            const btn = c.querySelector('.select-role-btn');
+            if (btn) btn.textContent = 'Select Role';
         });
 
         // Add selection to clicked card
         card.classList.add('selected');
-        card.querySelector('.select-role-btn').textContent = 'Selected';
+        const selectedBtn = card.querySelector('.select-role-btn');
+        if (selectedBtn) selectedBtn.textContent = 'Selected';
         
         // Store selected role
         this.selectedRole = card.dataset.role;
@@ -86,15 +88,13 @@ class ProfileCreator {
         this.updateStepIndicator(1);
 
         // Show username section with animation
+        this.roleSelection.classList.add('slide-out');
         setTimeout(() => {
-            this.roleSelection.classList.add('slide-out');
-            setTimeout(() => {
-                this.roleSelection.style.display = 'none';
-                this.usernameSection.classList.remove('hidden');
-                this.usernameSection.classList.add('slide-in');
-                this.usernameInput.focus();
-            }, 300);
-        }, 500);
+            this.roleSelection.style.display = 'none';
+            this.usernameSection.classList.remove('hidden');
+            this.usernameSection.classList.add('slide-in');
+            if (this.usernameInput) this.usernameInput.focus();
+        }, 300);
     }
 
     async handleUsernameInput() {
@@ -117,7 +117,7 @@ class ProfileCreator {
         await new Promise(resolve => setTimeout(resolve, 500));
         
         // For demo, assume username is available if it ends with odd number
-        const isAvailable = parseInt(username.slice(-1)) % 2 === 1;
+        const isAvailable = parseInt(username.slice(-1)) % 2 === 1 || isNaN(parseInt(username.slice(-1)));
         
         if (isAvailable) {
             this.usernameStatus.textContent = 'Username is available!';
@@ -138,14 +138,12 @@ class ProfileCreator {
         this.updateStepIndicator(2);
 
         // Show wallet section with animation
+        this.usernameSection.classList.add('slide-out');
         setTimeout(() => {
-            this.usernameSection.classList.add('slide-out');
-            setTimeout(() => {
-                this.usernameSection.classList.add('hidden');
-                this.walletConnect.classList.remove('hidden');
-                this.walletConnect.classList.add('slide-in');
-            }, 300);
-        }, 500);
+            this.usernameSection.classList.add('hidden');
+            this.walletConnect.classList.remove('hidden');
+            this.walletConnect.classList.add('slide-in');
+        }, 300);
     }
 
     async connectWallet() {

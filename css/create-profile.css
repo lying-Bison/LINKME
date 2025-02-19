@@ -1,4 +1,4 @@
-/* Common Variables */
+/* Variables */
 :root {
     --primary-color: #00f6ff;
     --secondary-color: #7000ff;
@@ -9,34 +9,18 @@
     --text-primary: #ffffff;
     --text-secondary: #94a3b8;
     --hover-shadow: 0 8px 32px rgba(0, 246, 255, 0.15);
-    --border-radius: 16px;
-    --transition-speed: 0.3s;
-    --card-border: 1px solid rgba(255, 255, 255, 0.05);
-    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    --gradient-primary: linear-gradient(135deg, #00f6ff 0%, #00ff9d 100%);
-    --gradient-secondary: linear-gradient(135deg, #7000ff 0%, #00f6ff 100%);
-    --font-primary: 'Montserrat', sans-serif;
-    --font-secondary: 'Inter', sans-serif;
     --success-color: #00ff9d;
     --danger-color: #ff3b3b;
 }
 
-/* Reset & Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Base Styles */
 body {
-    font-family: var(--font-secondary);
+    font-family: 'Inter', sans-serif;
     background-color: var(--background-dark);
     color: var(--text-primary);
     line-height: 1.6;
-    background-image: 
-        radial-gradient(circle at 15% 50%, rgba(0, 246, 255, 0.08) 0%, transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(112, 0, 255, 0.08) 0%, transparent 25%);
-    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
 }
 
 /* Create Profile Page Styles */
@@ -368,4 +352,32 @@ body {
         flex-direction: column;
         gap: 0.5rem;
     }
+}
+
+.navbar {
+    background: var(--card-bg);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
