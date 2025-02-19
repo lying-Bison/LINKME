@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoProfile - Showcase Your Crypto Legacy</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // Simple router
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname;
+            
+            // Remove trailing slash if present
+            const cleanPath = path.endsWith('/') ? path.slice(0, -1) : path;
+            
+            if (cleanPath === '') {
+                // Home page - do nothing, let it load normally
+                return;
+            } else if (cleanPath === '/create-profile') {
+                window.location.href = '/create-profile.html';
+            } else if (cleanPath === '/profile-editor') {
+                window.location.href = '/profile-editor.html' + window.location.search;
+            } else {
+                // Assume it's a username profile
+                const username = cleanPath.substring(1); // Remove leading slash
+                if (username) {
+                    // Load the public profile with the username
+                    window.location.href = `/public-profile.html?username=${encodeURIComponent(username)}`;
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">CryptoProfile</div>
+            <div class="nav-right">
+                <a href="create-profile.html" class="cta-button">Create Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Showcase Your Crypto Legacy</h1>
+                <p class="subheadline">Join the blockchain revolution and create your professional crypto identity</p>
+                <div class="hero-buttons">
+                    <a href="create-profile.html" class="cta-button primary">
+                        <i class="fas fa-plus-circle"></i>
+                        Create Profile
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Why Choose CryptoProfile?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Wallet Integration</h3>
+                    <p>Connect your crypto wallet securely and showcase your holdings</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community Building</h3>
+                    <p>Connect with other crypto enthusiasts and grow your network</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Track Performance</h3>
+                    <p>Display your trading history and investment success</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Profiles -->
+        <section class="featured-profiles">
+            <h2>Featured Profiles</h2>
+            <div class="profiles-grid">
+                <!-- Example Profile Card -->
+                <div class="profile-card">
+                    <div class="profile-banner">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400' fill='none'%3E%3Crect width='800' height='400' fill='%231a1a24'/%3E%3C/svg%3E" alt="Profile Banner">
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-avatar trader">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>CryptoTrader</h3>
+                        <span class="role-badge">Trader</span>
+                        <p class="profile-stats">
+                            <span><i class="fas fa-chart-bar"></i> 150+ Trades</span>
+                            <span><i class="fas fa-users"></i> 1.2k Followers</span>
+                        </p>
+                        <a href="#" class="view-profile-btn">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About CryptoProfile</h3>
+                <p>Your gateway to the decentralized world. Create, customize, and share your crypto identity.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

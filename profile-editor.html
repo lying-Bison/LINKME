@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | CryptoProfile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/profile-editor.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+</head>
+<body>
+    <div class="editor-container">
+        <!-- Editor Section -->
+        <div class="editor-section">
+            <h2>Edit Your Profile</h2>
+            <form id="profileForm">
+                <!-- Profile Banner -->
+                <div class="form-group">
+                    <label>Profile Banner</label>
+                    <div class="banner-upload" id="bannerUpload">
+                        <input type="file" id="bannerInput" accept="image/*" hidden>
+                        <div class="upload-placeholder">
+                            <i class="fas fa-image"></i>
+                            <p>Click to upload banner image</p>
+                            <span>Recommended size: 1500x500px</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Picture -->
+                <div class="form-group">
+                    <label>Profile Picture</label>
+                    <div class="profile-pic-upload" id="profilePicUpload">
+                        <input type="file" id="profilePicInput" accept="image/*" hidden>
+                        <div class="upload-placeholder">
+                            <i class="fas fa-user"></i>
+                            <p>Click to upload profile picture</p>
+                            <span>Square image recommended</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="displayName" placeholder="Enter your display name" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="bio" placeholder="Tell us about yourself..." maxlength="500" rows="2"></textarea>
+                    <div class="char-count"><span id="bioCharCount">0</span>/500</div>
+                </div>
+
+                <!-- Role-specific Fields -->
+                <div id="roleFields">
+                    <!-- Individual Fields -->
+                    <div class="form-group individual-field">
+                        <label>Interests</label>
+                        <input type="text" id="interests" placeholder="e.g., NFTs, DeFi, Web3">
+                    </div>
+
+                    <div class="form-group individual-field">
+                        <label>Experience Level</label>
+                        <select id="individualExperience">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+
+                    <!-- Trader Fields -->
+                    <div class="form-group trader-field">
+                        <label>Trading Experience</label>
+                        <select id="tradingExperience">
+                            <option value="beginner">Beginner (< 1 year)</option>
+                            <option value="intermediate">Intermediate (1-3 years)</option>
+                            <option value="advanced">Advanced (3-5 years)</option>
+                            <option value="expert">Expert (5+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group trader-field">
+                        <label>Preferred Trading Pairs</label>
+                        <input type="text" id="tradingPairs" placeholder="e.g., BTC/USD, ETH/USD">
+                    </div>
+
+                    <!-- Artist Fields -->
+                    <div class="form-group artist-field">
+                        <label>Art Style</label>
+                        <input type="text" id="artStyle" placeholder="e.g., Digital Art, 3D, Pixel Art">
+                    </div>
+
+                    <div class="form-group artist-field">
+                        <label>Gallery Link</label>
+                        <input type="text" id="galleryLink" placeholder="Link to your art gallery">
+                    </div>
+
+                    <!-- Collector Fields -->
+                    <div class="form-group collector-field">
+                        <label>Collection Focus</label>
+                        <input type="text" id="collectionFocus" placeholder="e.g., NFT Art, Trading Cards">
+                    </div>
+
+                    <div class="form-group collector-field">
+                        <label>Investment Strategy</label>
+                        <select id="investmentStrategy">
+                            <option value="longterm">Long-term Holder</option>
+                            <option value="active">Active Trader</option>
+                            <option value="hybrid">Hybrid Approach</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="form-group">
+                    <label>Social Links</label>
+                    <div id="socialLinksContainer">
+                        <!-- Default social link input -->
+                        <div class="social-link-input">
+                            <select class="platform-select">
+                                <option value="twitter">Twitter</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="github">GitHub</option>
+                                <option value="discord">Discord</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <input type="text" class="username-input" placeholder="Enter username or URL">
+                            <button type="button" class="remove-social-link">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="secondary-button" id="addSocialLink">
+                        <i class="fas fa-plus"></i>
+                        Add Social Link
+                    </button>
+                </div>
+
+                <!-- Theme Colors -->
+                <div class="form-group">
+                    <label>Profile Theme Colors</label>
+                    <div class="theme-colors">
+                        <div class="color-picker-group">
+                            <label>Primary Color</label>
+                            <input type="color" id="primaryThemeColor" value="#6C5CE7">
+                        </div>
+                        <div class="color-picker-group">
+                            <label>Secondary Color</label>
+                            <input type="color" id="secondaryThemeColor" value="#A29BFE">
+                        </div>
+                        <div class="theme-preview">
+                            <div class="theme-gradient" id="themePreview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <button type="submit" class="cta-button">
+                    <i class="fas fa-save"></i>
+                    Save Profile
+                </button>
+            </form>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <div class="preview-container">
+                <div class="preview-banner-placeholder">
+                    <img src="assets/default-banner.jpg" alt="Profile Banner" id="previewBanner" class="preview-banner">
+                </div>
+                <div class="preview-content-area">
+                    <div class="profile-info-container">
+                        <div class="preview-profile-pic-placeholder">
+                            <div class="glow"></div>
+                            <img src="assets/default-avatar.jpg" alt="Profile Picture" id="previewProfilePic" class="preview-profile-pic">
+                        </div>
+                        <div class="preview-content">
+                            <h2 id="previewDisplayName" class="preview-display-name">BAZINGA</h2>
+                            <p id="previewBio" class="preview-bio">Write a brief bio about yourself. This will appear on your profile.</p>
+                            <div id="previewSocialLinks" class="preview-social-links">
+                                <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="social-link" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                                <a href="#" class="social-link" aria-label="Link"><i class="fas fa-link"></i></a>
+                                <a href="#" class="social-link" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Success Modal -->
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Profile Saved!</h3>
+            <p>Your profile has been updated successfully.</p>
+        </div>
+    </div>
+
+    <!-- Banner Adjustment Modal -->
+    <div class="modal" id="bannerAdjustModal">
+        <div class="modal-content banner-adjust-content">
+            <h3>Adjust Banner Image</h3>
+            <div class="banner-crop-container">
+                <img id="bannerCropImage" src="" alt="Banner to crop">
+            </div>
+            <div class="banner-adjust-controls">
+                <button class="secondary-button" id="rotateBannerLeft">
+                    <i class="fas fa-undo"></i>
+                    Rotate Left
+                </button>
+                <button class="secondary-button" id="rotateBannerRight">
+                    <i class="fas fa-redo"></i>
+                    Rotate Right
+                </button>
+                <button class="secondary-button" id="flipBannerX">
+                    <i class="fas fa-arrows-alt-h"></i>
+                    Flip Horizontal
+                </button>
+                <button class="secondary-button" id="flipBannerY">
+                    <i class="fas fa-arrows-alt-v"></i>
+                    Flip Vertical
+                </button>
+            </div>
+            <div class="modal-actions">
+                <button class="secondary-button" onclick="document.getElementById('bannerAdjustModal').classList.remove('active')">
+                    Cancel
+                </button>
+                <button class="cta-button" id="saveBannerAdjustments">
+                    <i class="fas fa-check"></i>
+                    Apply Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="js/profile-editor.js"></script>
+    <script>
+        function getContrastColor(hexcolor) {
+            // Remove the # if present
+            hexcolor = hexcolor.replace('#', '');
+            
+            // Convert to RGB
+            const r = parseInt(hexcolor.substr(0, 2), 16);
+            const g = parseInt(hexcolor.substr(2, 2), 16);
+            const b = parseInt(hexcolor.substr(4, 2), 16);
+            
+            // Calculate luminance using perceived brightness formula
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            
+            // Return white for dark colors, black for light colors
+            return luminance > 0.6 ? '#000000' : '#ffffff';
+        }
+
+        function updateProfileTheme(color) {
+            // Get contrast color for text
+            const textColor = getContrastColor(color);
+            
+            // Update display name with important flag and direct style
+            document.querySelectorAll('.preview-display-name').forEach(displayName => {
+                displayName.style.setProperty('color', textColor, 'important');
+                // Also update using direct style as fallback
+                displayName.style.color = textColor;
+            });
+            
+            // Update bio with semi-transparency
+            document.querySelectorAll('.preview-bio').forEach(bio => {
+                bio.style.setProperty('color', textColor === '#ffffff' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)', 'important');
+            });
+            
+            // Update social links
+            document.querySelectorAll('.preview-social-links .social-link').forEach(link => {
+                // Set icon color
+                link.style.setProperty('color', textColor, 'important');
+                link.style.color = textColor; // Direct style as fallback
+                
+                // Set background with semi-transparency
+                const rgbColor = hexToRgb(color);
+                const bgColor = `rgba(${rgbColor}, 0.2)`;
+                link.style.setProperty('background-color', bgColor, 'important');
+                
+                // Add hover effect
+                link.addEventListener('mouseenter', () => {
+                    link.style.setProperty('background-color', `rgba(${rgbColor}, 0.3)`, 'important');
+                });
+                link.addEventListener('mouseleave', () => {
+                    link.style.setProperty('background-color', bgColor, 'important');
+                });
+            });
+
+            // Force a repaint to ensure styles are applied
+            document.querySelector('.preview-section').style.transform = 'translateZ(0)';
+        }
+
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            return `${r}, ${g}, ${b}`;
+        }
+
+        // Add event listeners for color inputs
+        const colorPicker = document.getElementById('primaryThemeColor');
+        
+        // Use both input and change events
+        ['input', 'change'].forEach(event => {
+            colorPicker.addEventListener(event, (e) => {
+                updateProfileTheme(e.target.value);
+            });
+        });
+
+        // Initialize with default color
+        window.addEventListener('load', () => {
+            const defaultColor = colorPicker.value;
+            updateProfileTheme(defaultColor);
+        });
+    </script>
+</body>
+</html>
