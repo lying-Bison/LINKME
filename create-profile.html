@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Your CryptoProfile</title>
-    <link rel="stylesheet" href="css/create-profile.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/create-profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -16,6 +16,11 @@
     </nav>
 
     <div class="create-profile-container">
+        <div class="welcome-section">
+            <h1>Create Your CryptoProfile</h1>
+            <p>Choose your role and start building your crypto identity</p>
+        </div>
+
         <!-- Step Indicator -->
         <div class="step-indicator">
             <div class="step active">
@@ -32,94 +37,83 @@
             </div>
         </div>
 
-        <!-- Role Selection Section -->
-        <section id="roleSection" class="role-selection">
-            <h2>Choose Your Role</h2>
-            <p>Select the role that best describes your activity in the crypto space</p>
-            
+        <!-- Role Selection -->
+        <div class="role-selection">
+            <h2>Select Your Role</h2>
             <div class="role-cards">
-                <div class="role-card" data-role="individual">
-                    <i class="fas fa-user"></i>
-                    <h3>Individual</h3>
-                    <p>Personal crypto enthusiast and community member</p>
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Share your crypto journey</li>
-                        <li><i class="fas fa-check"></i> Connect with the community</li>
-                        <li><i class="fas fa-check"></i> Learn and grow together</li>
-                    </ul>
-                </div>
-
                 <div class="role-card" data-role="trader">
-                    <i class="fas fa-chart-line"></i>
+                    <div class="role-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
                     <h3>Trader</h3>
-                    <p>Active crypto trader sharing insights and strategies</p>
                     <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Share trading strategies</li>
-                        <li><i class="fas fa-check"></i> Connect with other traders</li>
-                        <li><i class="fas fa-check"></i> Track portfolio performance</li>
+                        <li><i class="fas fa-check"></i> Display trading history</li>
+                        <li><i class="fas fa-check"></i> Share market insights</li>
+                        <li><i class="fas fa-check"></i> Track performance</li>
                     </ul>
+                    <button class="select-role-btn">Select Role</button>
                 </div>
 
-                <div class="role-card" data-role="artist">
-                    <i class="fas fa-palette"></i>
-                    <h3>Artist</h3>
-                    <p>NFT creator and digital artist in the crypto space</p>
+                <div class="role-card" data-role="investor">
+                    <div class="role-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Investor</h3>
                     <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Showcase your NFT collections</li>
-                        <li><i class="fas fa-check"></i> Connect with collectors</li>
-                        <li><i class="fas fa-check"></i> Share your creative process</li>
+                        <li><i class="fas fa-check"></i> Showcase portfolio</li>
+                        <li><i class="fas fa-check"></i> Investment strategy</li>
+                        <li><i class="fas fa-check"></i> Long-term analysis</li>
                     </ul>
+                    <button class="select-role-btn">Select Role</button>
                 </div>
 
-                <div class="role-card" data-role="collector">
-                    <i class="fas fa-gem"></i>
-                    <h3>Collector</h3>
-                    <p>NFT collector and crypto art enthusiast</p>
+                <div class="role-card" data-role="developer">
+                    <div class="role-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Developer</h3>
                     <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Display your collection</li>
-                        <li><i class="fas fa-check"></i> Connect with artists</li>
-                        <li><i class="fas fa-check"></i> Share collecting insights</li>
+                        <li><i class="fas fa-check"></i> Show projects</li>
+                        <li><i class="fas fa-check"></i> Technical expertise</li>
+                        <li><i class="fas fa-check"></i> GitHub integration</li>
                     </ul>
+                    <button class="select-role-btn">Select Role</button>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- Username Section -->
-        <section id="usernameSection" class="username-section hidden">
+        <div class="username-section hidden">
             <h2>Choose Your Username</h2>
-            <p>This will be your unique identifier on CryptoProfile</p>
-            
-            <div class="username-container">
-                <div class="url-preview">
-                    <span class="domain">cryptoprofile.com/</span>
-                    <div class="username-input-container">
-                        <input type="text" id="usernameInput" placeholder="username" maxlength="30">
-                    </div>
+            <div class="url-preview">
+                <span class="domain">cryptoprofile.com/</span>
+                <div class="username-input-container">
+                    <input type="text" id="username" placeholder="your-username" maxlength="30">
                 </div>
-                <div id="usernameStatus" class="username-status"></div>
-                <p class="hint">Press Enter when ready to continue</p>
             </div>
-        </section>
+            <div class="username-status"></div>
+            <button class="continue-btn" disabled>Continue</button>
+        </div>
 
-        <!-- Wallet Connection Section -->
-        <section id="walletSection" class="wallet-connect hidden">
+        <!-- Wallet Connect Section -->
+        <div class="wallet-connect hidden">
             <h2>Connect Your Wallet</h2>
-            <p>Connect your Phantom wallet to verify your crypto identity</p>
-            
-            <button id="connectWalletBtn" class="connect-wallet-btn">
+            <p>Connect your crypto wallet to verify your identity and showcase your holdings</p>
+            <button class="connect-wallet-btn">
                 <i class="fas fa-wallet"></i>
-                Connect Phantom Wallet
+                Connect Wallet
             </button>
-        </section>
-
-        <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="loading-overlay hidden">
-            <div class="loader"></div>
-            <div id="loadingMessage">Loading...</div>
+            <div class="wallet-status"></div>
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden">
+        <div class="loader"></div>
+        <p>Processing...</p>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <script src="js/create-profile.min.js"></script>
+    <script src="js/create-profile.js"></script>
 </body>
 </html>
