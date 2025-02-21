@@ -59,22 +59,21 @@ document.addEventListener('DOMContentLoaded', () => {
             this.bannerUpload.addEventListener('click', () => this.bannerInput.click());
             this.profilePicUpload.addEventListener('click', () => this.profilePicInput.click());
 
-            this.bannerInput.addEventListener('change', (e) => this.handleImageUpload(e, 'banner'));
-            this.profilePicInput.addEventListener('change', (e) => this.handleImageUpload(e, 'profile'));
+            this.bannerInput.addEventListener('change', (e) => this.handleFileUpload(e, 'previewBanner', 'banner'));
+            this.profilePicInput.addEventListener('change', (e) => this.handleFileUpload(e, 'previewProfilePic', 'profile'));
 
             // Text inputs
             this.displayNameInput.addEventListener('input', () => {
-                this.previewDisplayName.textContent = this.displayNameInput.value || 'Your Name';
+                this.updatePreview();
             });
 
             this.bioInput.addEventListener('input', () => {
-                this.previewBio.textContent = this.bioInput.value || 'Write a brief bio about yourself...';
+                this.updatePreview();
                 this.bioCharCount.textContent = `${this.bioInput.value.length}/500`;
             });
 
             this.roleSelect.addEventListener('change', () => {
-                const selectedOption = this.roleSelect.options[this.roleSelect.selectedIndex];
-                this.previewRole.textContent = selectedOption.text;
+                this.updatePreview();
             });
 
             // Theme colors
@@ -86,24 +85,44 @@ document.addEventListener('DOMContentLoaded', () => {
             this.initializeSocialLinkEvents();
         }
 
-        handleImageUpload(event, type) {
-            const file = event.target.files[0];
-            if (!file) return;
+        updatePreview() {
+            // Update display name
+            const displayName = this.displayNameInput.value || 'Display Name';
+            this.previewDisplayName.textContent = displayName;
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imageUrl = e.target.result;
-                if (type === 'banner') {
-                    this.previewBanner.src = imageUrl;
-                    this.bannerUpload.style.backgroundImage = `url(${imageUrl})`;
-                    this.bannerUpload.querySelector('.upload-placeholder').style.display = 'none';
-                } else {
-                    this.previewProfilePic.src = imageUrl;
-                    this.profilePicUpload.style.backgroundImage = `url(${imageUrl})`;
-                    this.profilePicUpload.querySelector('.upload-placeholder').style.display = 'none';
-                }
-            };
-            reader.readAsDataURL(file);
+            // Update role
+            const role = this.roleSelect.value || 'Role';
+            this.previewRole.textContent = role;
+
+            // Update bio
+            const bio = this.bioInput.value || 'Your bio will appear here...';
+            this.previewBio.textContent = bio;
+
+            // Update social links
+            this.updateSocialLinksPreview();
+        }
+
+        handleFileUpload(event, previewId, type) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    
+                    // Add active state to upload area
+                    const uploadArea = type === 'banner' ? 
+                        document.querySelector('.banner-upload') : 
+                        document.querySelector('.profile-pic-upload');
+                    
+                    uploadArea.style.backgroundImage = `url(${e.target.result})`;
+                    uploadArea.classList.add('has-image');
+                    
+                    // Store the file for later upload
+                    this[type === 'banner' ? 'bannerFile' : 'profilePicFile'] = file;
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         updateThemeColors() {
@@ -141,6 +160,31 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Return black or white based on background luminance
             return luminance > 0.5 ? '#000000' : '#FFFFFF';
+        }
+
+        updateSocialLinksPreview() {
+            const socialLinksContainer = this.previewSocialLinks;
+            socialLinksContainer.innerHTML = '';
+
+            const socialInputs = this.socialLinksContainer.querySelectorAll('.social-link-input');
+            socialInputs.forEach(input => {
+                const platform = input.querySelector('select').value;
+                const url = input.querySelector('input[type="text"]').value;
+
+                if (url) {
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.className = 'social-link';
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    
+                    const icon = document.createElement('i');
+                    icon.className = `fab fa-${platform.toLowerCase()}`;
+                    link.appendChild(icon);
+                    
+                    socialLinksContainer.appendChild(link);
+                }
+            });
         }
 
         addSocialLink() {
@@ -191,39 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (select && input) {
                     select.addEventListener('change', () => this.updateSocialLinksPreview());
                     input.addEventListener('input', () => this.updateSocialLinksPreview());
-                }
-            });
-        }
-
-        updateSocialLinksPreview() {
-            this.previewSocialLinks.innerHTML = '';
-            
-            const socialLinks = this.socialLinksContainer.querySelectorAll('.social-link-input');
-            socialLinks.forEach(link => {
-                const platform = link.querySelector('.platform-select').value;
-                const username = link.querySelector('.username-input').value;
-                
-                if (username) {
-                    const iconClass = {
-                        'twitter': 'fa-twitter',
-                        'instagram': 'fa-instagram',
-                        'linkedin': 'fa-linkedin',
-                        'github': 'fa-github',
-                        'discord': 'fa-discord',
-                        'telegram': 'fa-telegram',
-                        'other': 'fa-link'
-                    }[platform] || 'fa-link';
-
-                    const socialLink = document.createElement('a');
-                    socialLink.href = '#';
-                    socialLink.className = 'social-link';
-                    socialLink.innerHTML = `<i class="fab ${iconClass}"></i>`;
-                    
-                    // Apply theme colors
-                    socialLink.style.color = this.getContrastColor(this.primaryColorInput.value);
-                    socialLink.style.borderColor = this.secondaryColorInput.value;
-                    
-                    this.previewSocialLinks.appendChild(socialLink);
                 }
             });
         }
