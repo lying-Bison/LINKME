@@ -1,21 +1,55 @@
 {
   "version": 2,
+  "buildCommand": "echo 'No build required'",
+  "outputDirectory": ".",
   "builds": [
-    { "src": "api/server.js", "use": "@vercel/node" },
-    { "src": "**/*.html", "use": "@vercel/static" },
-    { "src": "css/**", "use": "@vercel/static" },
-    { "src": "js/**", "use": "@vercel/static" },
-    { "src": "images/**", "use": "@vercel/static" }
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "**/*",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "api/server.js" },
-    { "src": "^/css/(.*)", "dest": "/css/$1" },
-    { "src": "^/js/(.*)", "dest": "/js/$1" },
-    { "src": "^/images/(.*)", "dest": "/images/$1" },
-    { "src": "^/create-profile", "dest": "/create-profile.html" },
-    { "src": "^/profile-editor", "dest": "/profile-editor.html" },
-    { "src": "^/public-profile", "dest": "/public-profile.html" },
-    { "src": "^/$", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "/$1" }
+    {
+      "src": "/api/(.*)",
+      "dest": "api/server.js"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/css/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "/js/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "^/create-profile/?$",
+      "dest": "/create-profile.html"
+    },
+    {
+      "src": "^/profile-editor/?$",
+      "dest": "/profile-editor.html"
+    },
+    {
+      "src": "^/public-profile/?$",
+      "dest": "/public-profile.html"
+    },
+    {
+      "src": "^/$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.+)",
+      "dest": "/$1"
+    }
   ]
 }
