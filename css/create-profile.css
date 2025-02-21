@@ -11,23 +11,71 @@
     --hover-shadow: 0 8px 32px rgba(0, 246, 255, 0.15);
     --success-color: #00ff9d;
     --danger-color: #ff3b3b;
+    --border-radius: 16px;
+    --transition-speed: 0.3s;
+    --card-border: 1px solid rgba(255, 255, 255, 0.05);
+    --gradient-primary: linear-gradient(135deg, #00f6ff 0%, #00ff9d 100%);
+    --gradient-secondary: linear-gradient(135deg, #7000ff 0%, #00f6ff 100%);
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Inter', sans-serif;
 }
 
 /* Base Styles */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-secondary);
     background-color: var(--background-dark);
     color: var(--text-primary);
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0, 246, 255, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(112, 0, 255, 0.08) 0%, transparent 25%);
+    background-attachment: fixed;
 }
 
-/* Create Profile Page Styles */
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 11, 20, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 1rem 0;
+    border-bottom: var(--card-border);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--font-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo i {
+    color: var(--primary-color);
+}
+
+/* Create Profile Container */
 .create-profile-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 8rem 2rem 4rem;
     min-height: 100vh;
 }
 
@@ -39,146 +87,66 @@ body {
 .welcome-section h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-    background-clip: text;
+    background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-.role-selection {
-    margin-bottom: 4rem;
-    text-align: center;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.role-selection h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.role-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.role-card {
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 2px solid transparent;
-}
-
-.role-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--hover-shadow);
-}
-
-.role-card.selected {
-    border-color: var(--primary-color);
-    box-shadow: var(--hover-shadow);
-}
-
-.role-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-}
-
-.role-card h3 {
-    margin-bottom: 1rem;
-}
-
-.role-features {
-    list-style: none;
-    padding: 0;
-    margin: 1.5rem 0;
-    text-align: left;
-}
-
-.role-features li {
-    margin-bottom: 0.5rem;
+.welcome-section p {
     color: var(--text-secondary);
+    font-size: 1.1rem;
 }
 
-.role-features li i {
-    color: var(--primary-color);
-    margin-right: 0.5rem;
-}
-
-.select-role-btn {
-    background: var(--card-bg);
-    color: var(--text-primary);
-    border: 2px solid var(--primary-color);
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.selected .select-role-btn {
-    background: var(--primary-color);
-    color: var(--background-dark);
-}
-
+/* Step Indicator */
 .step-indicator {
     display: flex;
     justify-content: center;
-    margin-bottom: 3rem;
-    gap: 2rem;
+    gap: 4rem;
+    margin-bottom: 4rem;
 }
 
 .step {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.5rem;
     position: relative;
-    flex: 1;
-    max-width: 200px;
 }
 
-.step::after {
+.step:not(:last-child)::after {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 2px;
-    background: var(--background-light);
     top: 1rem;
-    left: 50%;
-    z-index: 1;
-}
-
-.step:last-child::after {
-    display: none;
+    left: calc(100% + 1rem);
+    width: 2rem;
+    height: 2px;
+    background: var(--text-secondary);
+    opacity: 0.2;
 }
 
 .step-number {
     width: 2rem;
     height: 2rem;
-    background: var(--background-light);
     border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--text-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    margin-bottom: 0.5rem;
-    position: relative;
-    z-index: 2;
-    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
 }
 
 .step.active .step-number {
     background: var(--primary-color);
+    border-color: var(--primary-color);
     color: var(--background-dark);
 }
 
 .step.completed .step-number {
     background: var(--success-color);
+    border-color: var(--success-color);
     color: var(--background-dark);
 }
 
@@ -195,52 +163,152 @@ body {
     color: var(--success-color);
 }
 
-.username-section,
-.wallet-connect {
-    max-width: 500px;
-    margin: 0 auto;
+/* Role Selection */
+.role-selection {
     text-align: center;
-    padding: 2rem;
-    background: var(--card-bg);
-    border-radius: 20px;
-    margin-bottom: 2rem;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.username-section.hidden,
-.wallet-connect.hidden {
-    display: none;
+.role-selection.slide-out {
+    transform: translateX(-100%);
+    opacity: 0;
 }
 
-.url-preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--background-light);
-    padding: 1rem;
-    border-radius: 10px;
+.role-selection h2 {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.role-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.role-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: var(--card-border);
+    transition: all var(--transition-speed);
+    cursor: pointer;
+}
+
+.role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow);
+}
+
+.role-card.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.role-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
     margin-bottom: 1rem;
 }
 
-.domain {
-    color: var(--text-secondary);
-    margin-right: 0.5rem;
+.role-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
-.username-input-container input {
+.role-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.role-features li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.role-features i {
+    color: var(--success-color);
+}
+
+.select-role-btn {
     background: transparent;
-    border: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    width: 100%;
+}
+
+.role-card.selected .select-role-btn {
+    background: var(--primary-color);
+    color: var(--background-dark);
+}
+
+.select-role-btn:hover {
+    background: var(--primary-color);
+    color: var(--background-dark);
+}
+
+/* Username Section */
+.username-section {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.username-section.hidden {
+    display: none;
+}
+
+.username-section.slide-in {
+    animation: slideIn 0.3s ease forwards;
+}
+
+.username-section.slide-out {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.username-section h2 {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.username-input-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.username-input {
+    width: 100%;
+    padding: 1rem;
+    background: var(--card-bg);
+    border: var(--card-border);
+    border-radius: var(--border-radius);
     color: var(--text-primary);
-    font-size: 1.1rem;
+    font-size: 1rem;
+    transition: all var(--transition-speed);
+}
+
+.username-input:focus {
     outline: none;
-    text-align: left;
-    width: 200px;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .username-status {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     font-size: 0.9rem;
-    transition: color 0.3s ease;
+    color: var(--text-secondary);
 }
 
 .username-status.error {
@@ -251,18 +319,16 @@ body {
     color: var(--success-color);
 }
 
-.continue-btn,
-.connect-wallet-btn {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    color: var(--text-primary);
+.continue-btn {
+    background: var(--gradient-primary);
+    color: var(--background-dark);
     border: none;
     padding: 1rem 2rem;
-    border-radius: 50px;
-    font-size: 1.1rem;
+    border-radius: var(--border-radius);
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-top: 2rem;
+    transition: all var(--transition-speed);
+    width: 100%;
 }
 
 .continue-btn:disabled {
@@ -270,21 +336,75 @@ body {
     cursor: not-allowed;
 }
 
-.continue-btn:not(:disabled):hover,
-.connect-wallet-btn:not(:disabled):hover {
-    transform: translateY(-3px);
+.continue-btn:not(:disabled):hover {
+    transform: translateY(-2px);
     box-shadow: var(--hover-shadow);
 }
 
+/* Wallet Connect Section */
+.wallet-connect {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.wallet-connect.hidden {
+    display: none;
+}
+
+.wallet-connect.slide-in {
+    animation: slideIn 0.3s ease forwards;
+}
+
+.wallet-connect h2 {
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+}
+
+.connect-wallet-btn {
+    background: var(--gradient-primary);
+    color: var(--background-dark);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.connect-wallet-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+}
+
+.wallet-status {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.wallet-status.error {
+    color: var(--danger-color);
+}
+
+.wallet-status.success {
+    color: var(--success-color);
+}
+
+/* Loading Overlay */
 .loading-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(10, 10, 15, 0.9);
+    background: rgba(10, 11, 20, 0.9);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 1000;
@@ -294,39 +414,19 @@ body {
     display: none;
 }
 
-.loader {
-    width: 50px;
-    height: 50px;
-    border: 3px solid var(--card-bg);
-    border-radius: 50%;
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--text-secondary);
     border-top-color: var(--primary-color);
+    border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
 }
 
-@keyframes spin {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-.wallet-status {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-}
-
-.slide-out {
-    transform: translateX(-50px);
-    opacity: 0;
-}
-
-.slide-in {
-    animation: slideIn 0.3s ease forwards;
-}
-
+/* Animations */
 @keyframes slideIn {
     from {
-        transform: translateX(50px);
+        transform: translateX(100%);
         opacity: 0;
     }
     to {
@@ -335,49 +435,41 @@ body {
     }
 }
 
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .create-profile-container {
-        padding: 2rem 1rem;
+        padding-top: 6rem;
+    }
+
+    .step-indicator {
+        gap: 2rem;
+    }
+
+    .step:not(:last-child)::after {
+        width: 1rem;
+    }
+
+    .role-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-section h1 {
+        font-size: 2rem;
     }
 
     .step-indicator {
         gap: 1rem;
     }
 
-    .role-cards {
-        grid-template-columns: 1fr;
+    .step-label {
+        display: none;
     }
-
-    .url-preview {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
-
-.navbar {
-    background: var(--card-bg);
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-decoration: none;
-    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
 }
