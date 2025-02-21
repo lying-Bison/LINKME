@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label>Profile Banner</label>
                     <div class="banner-upload" id="bannerUpload">
-                        <input type="file" id="bannerInput" accept="image/*" hidden>
+                        <input type="file" id="bannerInput" accept="image/*">
                         <div class="upload-placeholder">
                             <i class="fas fa-image"></i>
                             <p>Click to upload banner image</p>
@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label>Profile Picture</label>
                     <div class="profile-pic-upload" id="profilePicUpload">
-                        <input type="file" id="profilePicInput" accept="image/*" hidden>
+                        <input type="file" id="profilePicInput" accept="image/*">
                         <div class="upload-placeholder">
                             <i class="fas fa-user"></i>
                             <p>Click to upload profile picture</p>
@@ -52,64 +52,16 @@
                     <div class="char-count"><span id="bioCharCount">0</span>/500</div>
                 </div>
 
-                <!-- Role-specific Fields -->
-                <div id="roleFields">
-                    <!-- Individual Fields -->
-                    <div class="form-group individual-field">
-                        <label>Interests</label>
-                        <input type="text" id="interests" placeholder="e.g., NFTs, DeFi, Web3">
-                    </div>
-
-                    <div class="form-group individual-field">
-                        <label>Experience Level</label>
-                        <select id="individualExperience">
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="advanced">Advanced</option>
-                        </select>
-                    </div>
-
-                    <!-- Trader Fields -->
-                    <div class="form-group trader-field">
-                        <label>Trading Experience</label>
-                        <select id="tradingExperience">
-                            <option value="beginner">Beginner (< 1 year)</option>
-                            <option value="intermediate">Intermediate (1-3 years)</option>
-                            <option value="advanced">Advanced (3-5 years)</option>
-                            <option value="expert">Expert (5+ years)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group trader-field">
-                        <label>Preferred Trading Pairs</label>
-                        <input type="text" id="tradingPairs" placeholder="e.g., BTC/USD, ETH/USD">
-                    </div>
-
-                    <!-- Artist Fields -->
-                    <div class="form-group artist-field">
-                        <label>Art Style</label>
-                        <input type="text" id="artStyle" placeholder="e.g., Digital Art, 3D, Pixel Art">
-                    </div>
-
-                    <div class="form-group artist-field">
-                        <label>Gallery Link</label>
-                        <input type="text" id="galleryLink" placeholder="Link to your art gallery">
-                    </div>
-
-                    <!-- Collector Fields -->
-                    <div class="form-group collector-field">
-                        <label>Collection Focus</label>
-                        <input type="text" id="collectionFocus" placeholder="e.g., NFT Art, Trading Cards">
-                    </div>
-
-                    <div class="form-group collector-field">
-                        <label>Investment Strategy</label>
-                        <select id="investmentStrategy">
-                            <option value="longterm">Long-term Holder</option>
-                            <option value="active">Active Trader</option>
-                            <option value="hybrid">Hybrid Approach</option>
-                        </select>
-                    </div>
+                <!-- Role Selection -->
+                <div class="form-group">
+                    <label>Your Role</label>
+                    <select id="roleSelect">
+                        <option value="">Select your role</option>
+                        <option value="individual">Individual</option>
+                        <option value="trader">Trader</option>
+                        <option value="artist">Artist</option>
+                        <option value="collector">Collector</option>
+                    </select>
                 </div>
 
                 <!-- Social Links -->
@@ -169,22 +121,22 @@
         <div class="preview-section">
             <div class="preview-container">
                 <div class="preview-banner-placeholder">
-                    <img src="assets/default-banner.jpg" alt="Profile Banner" id="previewBanner" class="preview-banner">
+                    <img src="images/default-banner.jpg" alt="Profile Banner" id="previewBanner" class="preview-banner">
                 </div>
                 <div class="preview-content-area">
                     <div class="profile-info-container">
                         <div class="preview-profile-pic-placeholder">
                             <div class="glow"></div>
-                            <img src="assets/default-avatar.jpg" alt="Profile Picture" id="previewProfilePic" class="preview-profile-pic">
+                            <img src="images/default-avatar.jpg" alt="Profile Picture" id="previewProfilePic" class="preview-profile-pic">
                         </div>
                         <div class="preview-content">
-                            <h2 id="previewDisplayName" class="preview-display-name">BAZINGA</h2>
-                            <p id="previewBio" class="preview-bio">Write a brief bio about yourself. This will appear on your profile.</p>
+                            <h2 id="previewDisplayName" class="preview-display-name">Your Name</h2>
+                            <p id="previewBio" class="preview-bio">Write a brief bio about yourself...</p>
+                            <div class="preview-role">
+                                <span id="previewRole">Select your role</span>
+                            </div>
                             <div id="previewSocialLinks" class="preview-social-links">
-                                <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                                <a href="#" class="social-link" aria-label="Discord"><i class="fab fa-discord"></i></a>
-                                <a href="#" class="social-link" aria-label="Link"><i class="fas fa-link"></i></a>
-                                <a href="#" class="social-link" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                                <!-- Social links will be added dynamically -->
                             </div>
                         </div>
                     </div>
@@ -199,45 +151,8 @@
             <div class="success-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <h3>Profile Saved!</h3>
+            <h2>Profile Saved!</h2>
             <p>Your profile has been updated successfully.</p>
-        </div>
-    </div>
-
-    <!-- Banner Adjustment Modal -->
-    <div class="modal" id="bannerAdjustModal">
-        <div class="modal-content banner-adjust-content">
-            <h3>Adjust Banner Image</h3>
-            <div class="banner-crop-container">
-                <img id="bannerCropImage" src="" alt="Banner to crop">
-            </div>
-            <div class="banner-adjust-controls">
-                <button class="secondary-button" id="rotateBannerLeft">
-                    <i class="fas fa-undo"></i>
-                    Rotate Left
-                </button>
-                <button class="secondary-button" id="rotateBannerRight">
-                    <i class="fas fa-redo"></i>
-                    Rotate Right
-                </button>
-                <button class="secondary-button" id="flipBannerX">
-                    <i class="fas fa-arrows-alt-h"></i>
-                    Flip Horizontal
-                </button>
-                <button class="secondary-button" id="flipBannerY">
-                    <i class="fas fa-arrows-alt-v"></i>
-                    Flip Vertical
-                </button>
-            </div>
-            <div class="modal-actions">
-                <button class="secondary-button" onclick="document.getElementById('bannerAdjustModal').classList.remove('active')">
-                    Cancel
-                </button>
-                <button class="cta-button" id="saveBannerAdjustments">
-                    <i class="fas fa-check"></i>
-                    Apply Changes
-                </button>
-            </div>
         </div>
     </div>
 
