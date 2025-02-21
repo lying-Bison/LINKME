@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label>Profile Banner</label>
                     <div class="banner-upload" id="bannerUpload">
-                        <input type="file" id="bannerInput" accept="image/*">
+                        <input type="file" id="bannerInput" accept="image/*" style="display: none;">
                         <div class="upload-placeholder">
                             <i class="fas fa-image"></i>
                             <p>Click to upload banner image</p>
@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label>Profile Picture</label>
                     <div class="profile-pic-upload" id="profilePicUpload">
-                        <input type="file" id="profilePicInput" accept="image/*">
+                        <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
                         <div class="upload-placeholder">
                             <i class="fas fa-user"></i>
                             <p>Click to upload profile picture</p>
@@ -121,19 +121,19 @@
         <div class="preview-section">
             <div class="preview-container">
                 <div class="preview-banner-placeholder">
-                    <img src="images/default-banner.jpg" alt="Profile Banner" id="previewBanner" class="preview-banner">
+                    <img src="" alt="Profile Banner" id="previewBanner">
                 </div>
                 <div class="preview-content-area">
                     <div class="profile-info-container">
                         <div class="preview-profile-pic-placeholder">
                             <div class="glow"></div>
-                            <img src="images/default-avatar.jpg" alt="Profile Picture" id="previewProfilePic" class="preview-profile-pic">
+                            <img src="" alt="Profile Picture" id="previewProfilePic">
                         </div>
                         <div class="preview-content">
-                            <h2 id="previewDisplayName" class="preview-display-name">Your Name</h2>
-                            <p id="previewBio" class="preview-bio">Write a brief bio about yourself...</p>
+                            <h2 id="previewDisplayName"></h2>
+                            <p id="previewBio"></p>
                             <div class="preview-role">
-                                <span id="previewRole">Select your role</span>
+                                <span id="previewRole"></span>
                             </div>
                             <div id="previewSocialLinks" class="preview-social-links">
                                 <!-- Social links will be added dynamically -->
